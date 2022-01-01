@@ -37,8 +37,10 @@ I would like to implement both methods of calculating angles of a corner: bearin
 
 ### Triangles
 
+**To find angle θ:**
+
 $$
-Angle \theta = \cos(\frac{b^2 + c^2 - a^2}{2bc})
+\cos(\theta) = (\frac{b^2 + c^2 - a^2}{2bc})
 $$
 
 ### Bearings
