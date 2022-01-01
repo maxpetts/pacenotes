@@ -1,32 +1,40 @@
-use core::fmt;
+mod point {
+    use core::fmt;
 
-struct Coordinate {
-    long: f32,
-    lat: f32,
-}
+    pub struct Coordinate {
+        pub long: f32,
+        pub lat: f32,
+        pub elevation: Option<f32>,
+        _private: (),
+    }
 
-impl Coordinate {
-    pub fn new(long: f32, lat: f32) -> Self {
-        if long < -180.0 || long > 180.0 {
-            panic!("Out of bounds. Longitude must be above -180 and below 180");
+    impl Coordinate {
+        pub fn new(long: f32, lat: f32) -> Self {
+            if long < -180.0 || long > 180.0 {
+                panic!("Out of bounds. Longitude must be above -180 and below 180");
+            }
+
+            if lat < -90.0 || lat > 90.0 {
+                panic!("Out of bounds. Latitude must be above -90 and below 90");
+            }
+
+            Coordinate {
+                long: long,
+                lat: lat,
+                elevation: None,
+                _private: (),
+            }
         }
+    }
 
-        if lat < -90.0 || lat > 90.0 {
-            panic!("Out of bounds. Latitude must be above -90 and below 90");
-        }
-
-        Coordinate {
-            long: long,
-            lat: lat,
+    impl fmt::Display for Coordinate {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "[{}, {}]", self.long, self.lat)
         }
     }
 }
 
-impl fmt::Display for Coordinate {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{}, {}]", self.long, self.lat)
-    }
-}
+use point::Coordinate;
 
 fn main() {
     let p1 = Coordinate::new(1.0, 2.0);
