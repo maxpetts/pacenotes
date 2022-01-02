@@ -34,6 +34,22 @@ mod point {
 }
 
 use point::Coordinate;
+use std::f32::consts::PI;
+
+trait RadiansDegrees {
+    fn rad_to_deg(&self) -> f32;
+    fn deg_to_rad(&self) -> f32;
+}
+
+impl RadiansDegrees for f32 {
+    fn rad_to_deg(&self) -> f32 {
+        *self * (180.0 / PI)
+    }
+
+    fn deg_to_rad(&self) -> f32 {
+        *self * (PI / 180.0)
+    }
+}
 
 fn main() {
     let p1 = Coordinate::new(1.0, 2.0);
