@@ -62,12 +62,18 @@ fn main() {
 }
 
 fn find_p2_angle_as_rad(p1: Coordinate, p2: Coordinate, p3: Coordinate) -> f32 {
-    let dist_p1p2: f32 = ((p1.long - p2.long).powi(2) + (p1.lat - p2.lat).powi(2)).sqrt(); // Dont need to sqrt if going to ^2 later
-    let dist_p2p3: f32 = ((p2.long - p3.long).powi(2) + (p2.lat - p3.lat).powi(2)).sqrt();
-    let dist_p3p1: f32 = ((p3.long - p1.long).powi(2) + (p3.lat - p1.lat).powi(2))
-        .sqrt()
-        .abs();
+    let sqdist_p1p2: f32 = (p1.long - p2.long).powi(2) + (p1.lat - p2.lat).powi(2);
+    let sqdist_p2p3: f32 = (p2.long - p3.long).powi(2) + (p2.lat - p3.lat).powi(2);
+    let sqdist_p3p1: f32 = ((p3.long - p1.long).powi(2) + (p3.lat - p1.lat).powi(2)).abs();
 
-    ((dist_p1p2.powi(2) + dist_p2p3.powi(2) - dist_p3p1.powi(2)) / (2.0 * dist_p1p2 * dist_p2p3))
-        .acos()
+    let angle = ((sqdist_p1p2 + sqdist_p2p3 - sqdist_p3p1)
+        / (2.0 * sqdist_p1p2.sqrt() * sqdist_p2p3.sqrt()))
+    .acos();
+
+    if angle != f32::NAN {
+        return angle;
+    }
+
+    90.0
 }
+
