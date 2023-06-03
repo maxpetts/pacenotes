@@ -37,6 +37,8 @@ I would like to implement both methods of calculating angles of a corner: bearin
 
 ### Triangles
 
+**To find length between points:**
+
 **To find angle θ:**
 
 $$

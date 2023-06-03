@@ -33,6 +33,9 @@ mod point {
     }
 }
 
+#[derive(Debug)]
+struct directions {}
+
 use point::Coordinate;
 use std::f32::consts::PI;
 
@@ -54,11 +57,31 @@ impl RadiansDegrees for f32 {
 fn main() {
     let p1 = Coordinate::new(1.0, 2.0);
     let p2 = Coordinate::new(4.0, 2.0);
-    let p3 = Coordinate::new(4.0, 7.0);
+    let p3 = Coordinate::new(4.0, 1.0);
 
     let angle = find_p2_angle_as_rad(p1, p2, p3);
 
     println!("angle: {} || {}°", angle, angle.rad_to_deg());
+    get_driving_route("13.388860,52.517037;13.397634,52.529407;13.428555,52.523219?overview=full&annotations=true&steps=true");
+}
+
+fn get_driving_route(coords: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let url = format!("http://router.project-osrm.org/route/v1/driving/{}", coords);
+    let mut res = reqwest::blocking::get(&url)?;
+
+    match res.status() {
+        reqwest::StatusCode::OK => {
+            println!("{}", url);
+            println!("Stat: {}", res.status());
+            println!("Headers: {:#?}", res.headers());
+            println!("Body: {:#?}", res.text().unwrap());
+            println!("---------");
+            Ok(())
+        }
+        _ => {
+            panic!("Couldn't get data from OSRM");
+        }
+    }
 }
 
 fn find_p2_angle_as_rad(p1: Coordinate, p2: Coordinate, p3: Coordinate) -> f32 {
@@ -77,3 +100,4 @@ fn find_p2_angle_as_rad(p1: Coordinate, p2: Coordinate, p3: Coordinate) -> f32 {
     90.0
 }
 
+fn get_bearing(p1: Coordinate, p2: Coordinate, p3: Coordinate) {}
